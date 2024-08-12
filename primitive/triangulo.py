@@ -1,6 +1,6 @@
 import arcade
 
-# Definición de constantes
+
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Triángulo con Python"
@@ -18,7 +18,7 @@ class TrianguloWindow(arcade.Window):
         x1, y1 = x0 + base, y0
         x2, y2 = x0 + base // 2, y0 + height
 
-        # Lados del triángulo
+        
         self.draw_line(x0, y0, x1, y1, color)
         self.draw_line(x0, y0, x2, y2, color)
         self.draw_line(x1, y1, x2, y2, color)
@@ -31,7 +31,7 @@ class TrianguloWindow(arcade.Window):
         err = dx - dy
 
         while True:
-            arcade.draw_point(x0, y0, color, 1)  # Add size argument
+            arcade.draw_point(x0, y0, color, 1)  
             if x0 == x1 and y0 == y1:
                 break
             e2 = 2 * err
