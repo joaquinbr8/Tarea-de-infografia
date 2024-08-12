@@ -1,6 +1,6 @@
 import arcade
 
-# Definición de constantes
+
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Rectángulo con Python"
@@ -19,7 +19,7 @@ class RectanguloWindow(arcade.Window):
         x2, y2 = x0 + width, y0 + height
         x3, y3 = x0, y0 + height
 
-        # Lados del rectángulo
+        
         self.draw_line(x0, y0, x1, y1, color)
         self.draw_line(x1, y1, x2, y2, color)
         self.draw_line(x2, y2, x3, y3, color)
