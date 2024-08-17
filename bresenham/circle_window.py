@@ -85,7 +85,9 @@ class BresenhamWindow(arcade.Window):
             5
         )
 
-
 if __name__ == "__main__":
     app = BresenhamWindow()
     arcade.run()
+
+
+    #cuano rebotaba el circulo se pasaba del rango de pixeles y detectaba que el rango de pixeles era uno en el que se podia rebotar y por eso se trababa
