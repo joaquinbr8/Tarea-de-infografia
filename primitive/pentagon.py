@@ -1,5 +1,5 @@
 import arcade
-import math  # No olvides importar el módulo de matemáticas
+import math  
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
@@ -16,11 +16,11 @@ class MyGame(arcade.Window):
     def on_draw(self):
         arcade.start_render()
 
-        # Dibujar el pentágono con el algoritmo de Bresenham
+        
         self.draw_pentagon(self.center_x, self.center_y, self.radio, arcade.color.WHITE)
 
     def draw_pentagon(self, x, y, radio, color):
-        # Calcular los vértices del pentágono
+        
         vertices = []
         for i in range(5):
             angle = 2 * math.pi * i / 5
@@ -28,7 +28,7 @@ class MyGame(arcade.Window):
             y_vertex = y + radio * math.sin(angle)
             vertices.append((x_vertex, y_vertex))
 
-        # Dibujar las líneas del pentágono con Bresenham
+        
         for i in range(5):
             start_x, start_y = vertices[i]
             end_x, end_y = vertices[(i + 1) % 5]
