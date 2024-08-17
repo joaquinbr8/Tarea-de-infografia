@@ -1,7 +1,7 @@
 import arcade
 import numpy as np
 
-# Definir constantes
+
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Zorro 3D con Matrices"
@@ -9,41 +9,41 @@ SCREEN_TITLE = "Zorro 3D con Matrices"
 class FoxApp(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title, resizable=True)
-        self.pyramid_position = np.array([0, 0, -150, 0])  # Alejar el modelo un poco más
+        self.pyramid_position = np.array([0, 0, -150, 0])  
         self.rotation_matrix = np.eye(4)
         self.projection_matrix = self.create_perspective_projection_matrix(60, width / height, 0.1, 1000)
-        self.mouse_coords = (0, 0)  # Inicializar posición del mouse
+        self.mouse_coords = (0, 0)  
         arcade.set_background_color(arcade.color.SKY_BLUE)
 
     def setup(self):
-        # Definir el tamaño de la pirámide
+        
         scale_factor = 0.5
 
-        # Definir la pirámide principal (cuerpo del zorro)
+        
         self.body_vertices = np.array([
-            [0, 5 * scale_factor, 0, 1],    # Vértice superior
-            [-5 * scale_factor, -5 * scale_factor, 5 * scale_factor, 1],  # Base inferior izquierda
-            [5 * scale_factor, -5 * scale_factor, 5 * scale_factor, 1],   # Base inferior derecha
-            [5 * scale_factor, -5 * scale_factor, -5 * scale_factor, 1],  # Base superior derecha
-            [-5 * scale_factor, -5 * scale_factor, -5 * scale_factor, 1]  # Base superior izquierda
+            [0, 5 * scale_factor, 0, 1],    
+            [-5 * scale_factor, -5 * scale_factor, 5 * scale_factor, 1],  
+            [5 * scale_factor, -5 * scale_factor, 5 * scale_factor, 1],  
+            [5 * scale_factor, -5 * scale_factor, -5 * scale_factor, 1],  
+            [-5 * scale_factor, -5 * scale_factor, -5 * scale_factor, 1]  
         ])
         self.body_faces = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (1, 2, 3, 4)]
 
-        # Definir las orejas como pirámides adicionales
+    
         ear_scale = 0.3
         self.ear1_vertices = np.array([
-            [0, 6 * scale_factor, 0, 1],  # Vértice superior
-            [-3 * ear_scale, 2 * scale_factor, 3 * ear_scale, 1],  # Base inferior izquierda
-            [3 * ear_scale, 2 * scale_factor, 3 * ear_scale, 1],   # Base inferior derecha
-            [3 * ear_scale, 2 * scale_factor, -3 * ear_scale, 1],  # Base superior derecha
-            [-3 * ear_scale, 2 * scale_factor, -3 * ear_scale, 1]  # Base superior izquierda
+            [0, 6 * scale_factor, 0, 1],  
+            [-3 * ear_scale, 2 * scale_factor, 3 * ear_scale, 1],  
+            [3 * ear_scale, 2 * scale_factor, 3 * ear_scale, 1],   
+            [3 * ear_scale, 2 * scale_factor, -3 * ear_scale, 1],  
+            [-3 * ear_scale, 2 * scale_factor, -3 * ear_scale, 1]  
         ])
         self.ear2_vertices = np.array([
-            [0, 6 * scale_factor, 0, 1],  # Vértice superior
-            [-3 * ear_scale, 2 * scale_factor, 3 * ear_scale, 1],  # Base inferior izquierda
-            [3 * ear_scale, 2 * scale_factor, 3 * ear_scale, 1],   # Base inferior derecha
-            [3 * ear_scale, 2 * scale_factor, -3 * ear_scale, 1],  # Base superior derecha
-            [-3 * ear_scale, 2 * scale_factor, -3 * ear_scale, 1]  # Base superior izquierda
+            [0, 6 * scale_factor, 0, 1],  
+            [-3 * ear_scale, 2 * scale_factor, 3 * ear_scale, 1],  
+            [3 * ear_scale, 2 * scale_factor, 3 * ear_scale, 1],   
+            [3 * ear_scale, 2 * scale_factor, -3 * ear_scale, 1],  
+            [-3 * ear_scale, 2 * scale_factor, -3 * ear_scale, 1]  
         ])
         self.ear1_faces = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1)]
         self.ear2_faces = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1)]
@@ -61,17 +61,17 @@ class FoxApp(arcade.Window):
     def on_draw(self):
         arcade.start_render()
 
-        # Aplicar las transformaciones a los vértices
+        
         body_transformed = self.apply_transformations(self.body_vertices, self.pyramid_position)
         ear1_transformed = self.apply_transformations(self.ear1_vertices, self.pyramid_position + np.array([3 * 0.5, 7 * 0.5, 0, 0]))
         ear2_transformed = self.apply_transformations(self.ear2_vertices, self.pyramid_position + np.array([-3 * 0.5, 7 * 0.5, 0, 0]))
 
-        # Dibujar las caras de la pirámide principal (cuerpo del zorro)
+    
         for face in self.body_faces:
             points = [self.project_point(body_transformed[i]) for i in face]
             arcade.draw_polygon_outline(points, arcade.color.RED, 2)
 
-        # Dibujar las orejas
+        
         for face in self.ear1_faces:
             points = [self.project_point(ear1_transformed[i]) for i in face]
             arcade.draw_polygon_outline(points, arcade.color.ORANGE, 2)
@@ -81,22 +81,22 @@ class FoxApp(arcade.Window):
             arcade.draw_polygon_outline(points, arcade.color.ORANGE, 2)
 
     def on_update(self, delta_time):
-        # Obtener la posición del mouse en coordenadas normalizadas
+        
         mouse_x, mouse_y = self.mouse_coords
         center_x, center_y = SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2
 
-        # Calcular la diferencia entre el mouse y el centro de la pantalla
+        
         diff_x = (mouse_x - center_x) / center_x
         diff_y = (mouse_y - center_y) / center_y
 
-        # Limitar el ángulo de rotación para evitar giros extremos
-        max_angle = np.pi / 6  # Máximo 30 grados de rotación
+        
+        max_angle = np.pi / 6  
 
-        # Calcular ángulos de rotación según la posición del mouse
-        angle_x = max_angle * diff_y  # Rotación en el eje X según el movimiento vertical del mouse
-        angle_y = max_angle * diff_x  # Rotación en el eje Y según el movimiento horizontal del mouse
+        
+        angle_x = max_angle * diff_y  
+        angle_y = max_angle * diff_x  
 
-        # Crear la matriz de rotación para ambos ejes
+        
         rotation_x = np.array([
             [1, 0, 0, 0],
             [0, np.cos(angle_x), -np.sin(angle_x), 0],
@@ -111,11 +111,11 @@ class FoxApp(arcade.Window):
             [0, 0, 0, 1]
         ])
 
-        # Multiplicar las matrices de rotación
+        
         self.rotation_matrix = np.dot(rotation_y, rotation_x)
 
     def apply_transformations(self, vertices, position):
-        # Aplicar la rotación y la traslación
+        
         transformed_vertices = []
         for vertex in vertices:
             transformed_vertex = np.dot(self.rotation_matrix, vertex) + position
@@ -125,19 +125,19 @@ class FoxApp(arcade.Window):
     def project_point(self, vertex):
         """Proyectar un punto 3D en el espacio 2D utilizando la matriz de proyección en perspectiva."""
         projected_vertex = np.dot(self.projection_matrix, vertex)
-        # Dividir por la componente W para normalizar
+        
         if projected_vertex[3] != 0:
             projected_vertex /= projected_vertex[3]
-        # Convertir de coordenadas NDC a coordenadas de pantalla
+        
         x = (projected_vertex[0] + 1) * 0.5 * SCREEN_WIDTH
         y = (projected_vertex[1] + 1) * 0.5 * SCREEN_HEIGHT
         return x, y
 
     def on_mouse_motion(self, x, y, dx, dy):
-        # Actualizar la posición del mouse
+        
         self.mouse_coords = (x, y)
 
-# Iniciar la aplicación
+
 def main():
     app = FoxApp(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     app.setup()
